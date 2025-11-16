@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Hộp thư liên hệ</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    header {
+      background-color: #c0392b;
+      color: white;
+      text-align: center;
+      padding: 30px 20px;
+    }
+    header h1, header p {
+      margin: 0;
+    }
+    nav {
+      background-color: #fff;
+      padding: 10px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    nav a {
+      margin: 0 15px;
+      text-decoration: none;
+      color: #c0392b;
+      font-weight: bold;
+    }
+    .contact-box {
+      background-color: #fff;
+      margin: 40px auto;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      max-width: 500px;
+      text-align: center;
+    }
+    .contact-box h2 {
+      margin-bottom: 20px;
+      color: #c0392b;
+    }
+    .contact-box input,
+    .contact-box textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+    .contact-box button {
+      background-color: #c0392b;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .contact-box button:hover {
+      background-color: #e74c3c;
+    }
+    #response {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #27ae60;
+    }
+    footer {
+      background-color: #c0392b;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🎓 Chuyên đề giáo dục</h1>
+    <p>Trang chủ tuyên truyền giáo dục học đường an toàn và thân thiện</p>
+  </header>
+
+  <nav>
+    <a href="st.html">Trang chủ</a>
+    <a href="gt.html">Thông tin</a>
+    <a href="trochoi.html">Trò chơi</a>
+    <a href="gopy.html">Góp ý</a>
+  </nav>
+
+  <div class="contact-box">
+    <h2>📬 Gửi tin nhắn đến nhà trường</h2>
+    <form id="contactForm">
+      <input type="text" name="name" placeholder="Họ và tên" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <textarea name="message" rows="5" placeholder="Nội dung tin nhắn" required></textarea>
+      <button type="submit">Gửi</button>
+    </form>
+    <div id="response"></div>
+  </div>
+
+  <footer>
+    &copy; 2025 Trường Tân Mỹ Chánh. Chung tay vì học đường an toàn.
+  </footer>
+
+  <script>
+    const form = document.getElementById('contactForm');
+    const responseDiv = document.getElementById('response');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const data = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        message: formData.get('message')
+      };
+
+      try {
+        const res = await fetch('http://localhost:3000/feedback', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        const result = await res.text();
+        responseDiv.innerText = result;
+        responseDiv.style.color = '#27ae60';
+        form.reset();
+      } catch (error) {
+        responseDiv.innerText = 'Gửi thất bại. Vui lòng thử lại.';
+        responseDiv.style.color = '#c0392b';
+      }
+    });
+  </script>
+
+</body>
+</html>
